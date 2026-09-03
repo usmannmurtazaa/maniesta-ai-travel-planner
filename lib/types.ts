@@ -74,3 +74,11 @@ export interface AssistantMessage {
   role: 'user' | 'assistant';
   content: string;
 }
+
+export interface DestinationInfo {
+  name: string;
+  country?: string;
+  description?: string;
+  imageUrl?: string;
+  coordinates?: Coordinates;
+}
