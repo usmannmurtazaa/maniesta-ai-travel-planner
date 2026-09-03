@@ -1,4 +1,3 @@
-// lib/config.ts
 export const APP_CONFIG = {
   name: 'Maniesta AI Travel Planner',
   displayName: 'Maniesta',

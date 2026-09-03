@@ -88,7 +88,7 @@ export default function PlannerPage() {
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold text-center mb-4">Plan Your Trip</h1>
         <p className="text-white/70 text-center mb-8">
-          Tell us your preferences and we'll craft the perfect itinerary.
+          Tell us your preferences and we&apos;ll craft the perfect itinerary.
         </p>
         <ProgressBar currentStep={step} />
         <div className="glass-card p-6 sm:p-8 mt-8">

@@ -25,7 +25,7 @@ export interface ItineraryActivity {
   description: string;
   location?: string;
   cost?: number;
-  coordinates?: Coordinates; // optional, added in Phase 3
+  coordinates?: Coordinates;
 }
 
 export interface ItineraryDay {
@@ -44,7 +44,7 @@ export interface Itinerary {
   days: ItineraryDay[];
   summary: string;
   generatedAt: string;
-  destinationCoordinates?: Coordinates; // optional
+  destinationCoordinates?: Coordinates;
 }
 
 export interface WeatherData {
@@ -65,7 +65,7 @@ export interface WeatherData {
 
 export interface SavedTrip {
   id: string;
-  name: string; // e.g., destination
+  name: string;
   createdAt: string;
   itinerary: Itinerary;
 }

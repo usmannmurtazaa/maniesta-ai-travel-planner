@@ -1,5 +1,3 @@
-// lib/demo-data.ts
-
 import { DestinationInfo } from './types';
 
 interface DemoItinerary {

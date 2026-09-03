@@ -1,4 +1,3 @@
-// lib/ai.ts
 import { TripPreferences, TripPlan, DayItinerary, ActivityItem, Restaurant } from './types';
 import { generateId, generateDateRange, calculateBudgetBreakdown } from './utils';
 import { DEMO_ITINERARIES } from './demo-data';

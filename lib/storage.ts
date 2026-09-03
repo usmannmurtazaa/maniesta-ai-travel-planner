@@ -1,4 +1,3 @@
-// lib/storage.ts
 import { TripPlan } from './types';
 
 const STORAGE_KEY = 'maniesta_saved_trips';

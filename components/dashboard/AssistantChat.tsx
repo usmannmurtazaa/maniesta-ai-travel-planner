@@ -55,7 +55,7 @@ export default function AssistantChat({ itinerary }: AssistantChatProps) {
       <h3 className="text-xl font-semibold mb-4">AI Travel Assistant</h3>
       <div className="flex-1 overflow-y-auto space-y-4 mb-4">
         {messages.length === 0 && (
-          <p className="text-white/50">Ask me anything about your trip, like "What should I do tomorrow?"</p>
+          <p className="text-white/50">Ask me anything about your trip, like &quot;What should I do tomorrow?&quot;</p>
         )}
         {messages.map((msg, idx) => (
           <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>

@@ -1,4 +1,3 @@
-// lib/weather.ts
 import { WeatherData } from './types';
 import { getWeatherIcon } from './utils';
 
