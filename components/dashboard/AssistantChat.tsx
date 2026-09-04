@@ -31,7 +31,7 @@ export default function AssistantChat({ itinerary }: AssistantChatProps) {
     setLoading(true)
 
     try {
-      const res = await fetch('/api/assistant', {
+      const res = await fetch('/api/ai-assistant', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: [...messages, userMsg], itinerary }),
