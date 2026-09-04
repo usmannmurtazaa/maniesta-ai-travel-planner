@@ -24,22 +24,23 @@ export async function POST(request: NextRequest) {
 
     let prompt: string;
     if (targetDay === 'all') {
-      prompt = `Regenerate the entire itinerary for ${itinerary.destination} keeping the same overall preferences. Current itinerary: ${JSON.stringify(itinerary, null, 2)}. Return only raw JSON with same structure. Ensure to include coordinates for activities if possible.`;
+      prompt = `Regenerate the entire itinerary for ${itinerary.destination} keeping the same overall preferences. Current itinerary: ${JSON.stringify(itinerary, null, 2)}. Return only raw JSON with same structure. Ensure to include coordinates for activities if possible. IMPORTANT: Return only valid JSON, no markdown, no extra text.`;
     } else {
       const dayToRegenerate = itinerary.days.find(d => d.day === targetDay);
       if (!dayToRegenerate) {
         return NextResponse.json({ error: 'Day not found' }, { status: 404 });
       }
-      prompt = `Regenerate only day ${targetDay} of the itinerary for ${itinerary.destination}. Current day: ${JSON.stringify(dayToRegenerate, null, 2)}. Keep the day number and theme, but change activities. Return only the day object in JSON with same structure. Include coordinates for activities if possible.`;
+      prompt = `Regenerate only day ${targetDay} of the itinerary for ${itinerary.destination}. Current day: ${JSON.stringify(dayToRegenerate, null, 2)}. Keep the day number and theme, but change activities. Return only the day object in JSON with same structure. Include coordinates for activities if possible. IMPORTANT: Return only valid JSON, no markdown, no extra text.`;
     }
 
     const result = await model.generateContent({
-  contents: [{ role: 'user', parts: [{ text: prompt }] }],
-  generationConfig: {
-    maxOutputTokens: 2000,  // reduce token generation time
-    temperature: 0.7,
-  },
-});
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: {
+        maxOutputTokens: 4000, // increase to avoid truncation
+        temperature: 0.7,
+      },
+    });
+
     const text = result.response.text();
     const jsonText = extractJSON(text);
     const parsed = JSON.parse(jsonText);
@@ -63,5 +64,19 @@ function extractJSON(text: string): string {
   if (cleaned.startsWith('```json')) cleaned = cleaned.slice(7);
   else if (cleaned.startsWith('```')) cleaned = cleaned.slice(3);
   if (cleaned.endsWith('```')) cleaned = cleaned.slice(0, -3);
-  return cleaned.trim();
+  cleaned = cleaned.trim();
+
+  // Find first '{' and last '}'
+  const startIndex = cleaned.indexOf('{');
+  const endIndex = cleaned.lastIndexOf('}');
+  if (startIndex === -1 || endIndex === -1 || endIndex <= startIndex) {
+    throw new Error('No JSON object found in response');
+  }
+  let jsonStr = cleaned.substring(startIndex, endIndex + 1);
+
+  // Remove trailing commas before } or ]
+  jsonStr = jsonStr.replace(/,\s*}/g, '}');
+  jsonStr = jsonStr.replace(/,\s*]/g, ']');
+
+  return jsonStr;
 }
