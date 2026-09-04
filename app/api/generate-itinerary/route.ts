@@ -27,7 +27,13 @@ export async function POST(request: NextRequest) {
     const model = genAI.getGenerativeModel({ model: 'gemini-3.6-flash' });
 
     const prompt = buildPrompt(formData);
-    const result = await model.generateContent(prompt);
+    const result = await model.generateContent({
+  contents: [{ role: 'user', parts: [{ text: prompt }] }],
+  generationConfig: {
+    maxOutputTokens: 2000,  // reduce token generation time
+    temperature: 0.7,
+  },
+});
     const response = result.response;
     const text = response.text();
 

@@ -33,7 +33,13 @@ export async function POST(request: NextRequest) {
       prompt = `Regenerate only day ${targetDay} of the itinerary for ${itinerary.destination}. Current day: ${JSON.stringify(dayToRegenerate, null, 2)}. Keep the day number and theme, but change activities. Return only the day object in JSON with same structure. Include coordinates for activities if possible.`;
     }
 
-    const result = await model.generateContent(prompt);
+    const result = await model.generateContent({
+  contents: [{ role: 'user', parts: [{ text: prompt }] }],
+  generationConfig: {
+    maxOutputTokens: 2000,  // reduce token generation time
+    temperature: 0.7,
+  },
+});
     const text = result.response.text();
     const jsonText = extractJSON(text);
     const parsed = JSON.parse(jsonText);
