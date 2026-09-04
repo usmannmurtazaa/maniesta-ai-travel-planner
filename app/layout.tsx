@@ -11,8 +11,7 @@ export const metadata: Metadata = {
   title: 'Maniesta AI Travel Planner',
   description: 'Plan your perfect trip with AI-powered recommendations.',
   icons: {
-    icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>',
-  },
+  icon: '/favicon.png',  },
 }
 
 export default function RootLayout({
