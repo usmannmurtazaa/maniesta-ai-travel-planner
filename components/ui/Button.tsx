@@ -1,13 +1,18 @@
+'use client'
+
 import { forwardRef } from 'react'
 import { cn } from '@/lib/utils'
+import LoadingSpinner from '@/components/shared/LoadingSpinner'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'ghost'
   size?: 'sm' | 'md' | 'lg'
+  loading?: boolean
+  icon?: string
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'primary', size = 'md', ...props }, ref) => {
+  ({ className, variant = 'primary', size = 'md', loading = false, children, disabled, ...props }, ref) => {
     const variants = {
       primary: 'btn-primary',
       secondary: 'btn-secondary',
@@ -21,9 +26,19 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        className={cn(variants[variant], sizes[size], className)}
+        className={cn(variants[variant], sizes[size], className, loading && 'opacity-70 cursor-not-allowed')}
+        disabled={disabled || loading}
         {...props}
-      />
+      >
+        {loading ? (
+          <span className="flex items-center gap-2">
+            <LoadingSpinner size="sm" />
+            Loading...
+          </span>
+        ) : (
+          children
+        )}
+      </button>
     )
   }
 )

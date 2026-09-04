@@ -1,11 +1,13 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { Itinerary } from '@/lib/types'
 import WeatherCard from './WeatherCard'
-import MapView from './MapView'
 import BudgetBreakdown from './BudgetBreakdown'
 import AssistantChat from './AssistantChat'
-import ItineraryList from './ItineraryList' // we'll define this too
+import ItineraryList from './ItineraryList'
+
+const MapView = dynamic(() => import('./MapView'), { ssr: false })
 
 export default function DashboardContent({ itinerary }: { itinerary: Itinerary }) {
   return (

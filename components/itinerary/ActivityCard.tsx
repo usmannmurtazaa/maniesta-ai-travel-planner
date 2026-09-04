@@ -102,7 +102,7 @@ export default function ActivityCard({
                   {activity.location && (
                     <Badge variant="info">📍 {activity.location}</Badge>
                   )}
-                  {activity.cost > 0 && (
+                  {(activity.cost ?? 0) > 0 && (
                     <Badge variant="default">💰 {currency} {activity.cost}</Badge>
                   )}
                   {activity.duration && (

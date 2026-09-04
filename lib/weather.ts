@@ -1,7 +1,11 @@
-import { WeatherData } from './types';
+import { WeatherInfo } from './types';
 import { getWeatherIcon } from './utils';
 
-export async function getWeatherForLocation(latitude: number, longitude: number, date: string): Promise<WeatherData | null> {
+export async function getWeatherForLocation(
+  latitude: number,
+  longitude: number,
+  date: string
+): Promise<WeatherInfo | null> {
   try {
     const response = await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min,weathercode,precipitation_probability&timezone=auto&start_date=${date}&end_date=${date}`

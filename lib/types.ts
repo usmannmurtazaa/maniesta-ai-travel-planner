@@ -19,6 +19,7 @@ export interface TripFormData {
   transportation: string;
 }
 
+// Consolidated ItineraryActivity with legacy optional fields
 export interface ItineraryActivity {
   time: string;
   title: string;
@@ -26,12 +27,25 @@ export interface ItineraryActivity {
   location?: string;
   cost?: number;
   coordinates?: Coordinates;
+  duration?: string;
+  id?: string;
+  category?: 'morning' | 'afternoon' | 'evening';
 }
 
+// Consolidated ItineraryDay with legacy optional fields
 export interface ItineraryDay {
   day: number;
   theme: string;
   activities: ItineraryActivity[];
+  dayNumber?: number;
+  date?: string;
+  morning?: ItineraryActivity[];
+  afternoon?: ItineraryActivity[];
+  evening?: ItineraryActivity[];
+  restaurants?: Restaurant[];
+  transportation?: string;
+  weather?: { icon: string; temperature: number };
+  totalCost?: number;
 }
 
 export interface Itinerary {
@@ -48,8 +62,8 @@ export interface Itinerary {
 }
 
 export interface WeatherData {
+  location?: string;
   current: {
-    location?: string;
     temperature: number;
     windspeed: number;
     weathercode: number;
@@ -63,6 +77,15 @@ export interface WeatherData {
   };
 }
 
+export interface WeatherInfo {
+  temperature: number;
+  condition: string;
+  icon: string;
+  humidity: number;
+  windSpeed: number;
+  description: string;
+}
+
 export interface SavedTrip {
   id: string;
   name: string;
@@ -73,6 +96,7 @@ export interface SavedTrip {
 export interface AssistantMessage {
   role: 'user' | 'assistant';
   content: string;
+  timestamp?: string;
 }
 
 export interface DestinationInfo {
@@ -81,4 +105,61 @@ export interface DestinationInfo {
   description?: string;
   imageUrl?: string;
   coordinates?: Coordinates;
+  bestTimeToVisit?: string;
+  localTips?: string[];
+  attractions?: string[];
+  cuisine?: string;
+  currency?: string;
+  language?: string;
+  recommendedPlaces?: string[];
+}
+
+// Aliases for legacy components
+
+
+export type ChatMessage = AssistantMessage;
+export type ActivityItem = ItineraryActivity;
+export type DayItinerary = ItineraryDay;
+export type TravelPlan = Itinerary;
+
+// Additional legacy types
+export type TravelType = 'Solo' | 'Couple' | 'Family' | 'Friends' | 'Business';
+export type FoodPreference = 'Any' | 'Vegetarian' | 'Vegan' | 'Gluten-Free' | 'Halal' | 'Kosher';
+
+export interface TripPreferences {
+  destination: string;
+  startingLocation: string;
+  startDate: string;
+  endDate: string;
+  travelers: number;
+  budget: number;
+  currency: string;
+  travelType: string;            // allow lowercase 'solo', 'couple', etc.
+  interests: string[];
+  activities: string[];
+  foodPreferences: FoodPreference[];  // new field
+  accommodation: string;
+  transportation: string;
+  durationDays: number;          // new field
+  budgetLevel: 'budget' | 'moderate' | 'luxury';  // new field
+}
+
+export interface Restaurant {
+  name: string;
+  cuisine?: string;
+  priceRange?: string;
+  rating?: number;
+  address?: string;
+  id?: string;
+  location?: string;
+  priceLevel?: string;
+}
+
+export interface TripPlan extends Omit<Itinerary, 'budget'> {
+  id: string;
+  preferences?: any;
+  budget?: any; // legacy budget breakdown object
+  overview?: string;
+  destinationInfo?: DestinationInfo;
+  createdAt?: string;
 }

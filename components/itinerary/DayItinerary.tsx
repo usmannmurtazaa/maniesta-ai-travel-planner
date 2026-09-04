@@ -33,8 +33,7 @@ export default function DayItinerary({
 }: DayItineraryProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  const allActivities = [...day.morning, ...day.afternoon, ...day.evening];
-
+  const allActivities = [...(day.morning || []), ...(day.afternoon || []), ...(day.evening || [])];
   return (
     <Card className="overflow-hidden">
       <div className="flex items-center justify-between mb-4">
@@ -86,7 +85,7 @@ export default function DayItinerary({
             <div>
               <h4 className="text-sm font-semibold text-amber-400 mb-2">🌅 Morning</h4>
               <div className="space-y-2">
-                {day.morning.map((activity) => (
+                {day.morning?.map((activity) => (
                   <ActivityCard
                     key={activity.id}
                     activity={activity}
@@ -97,7 +96,7 @@ export default function DayItinerary({
                   />
                 ))}
                 <button
-                  onClick={() => onAddActivity(day.dayNumber, 'morning')}
+                  onClick={() => onAddActivity(day.dayNumber ?? day.day, 'morning')}
                   className="w-full p-2 border border-dashed border-white/20 rounded-xl text-gray-400 hover:text-white hover:border-white/40 text-sm transition-all"
                 >
                   + Add morning activity
@@ -109,7 +108,7 @@ export default function DayItinerary({
             <div>
               <h4 className="text-sm font-semibold text-sky-400 mb-2">☀️ Afternoon</h4>
               <div className="space-y-2">
-                {day.afternoon.map((activity) => (
+                {day.afternoon?.map((activity) => (
                   <ActivityCard
                     key={activity.id}
                     activity={activity}
@@ -120,7 +119,7 @@ export default function DayItinerary({
                   />
                 ))}
                 <button
-                  onClick={() => onAddActivity(day.dayNumber, 'afternoon')}
+                  onClick={() => onAddActivity(day.dayNumber ?? day.day, 'afternoon')}
                   className="w-full p-2 border border-dashed border-white/20 rounded-xl text-gray-400 hover:text-white hover:border-white/40 text-sm transition-all"
                 >
                   + Add afternoon activity
@@ -132,7 +131,7 @@ export default function DayItinerary({
             <div>
               <h4 className="text-sm font-semibold text-purple-400 mb-2">🌙 Evening</h4>
               <div className="space-y-2">
-                {day.evening.map((activity) => (
+                {day.evening?.map((activity) => (
                   <ActivityCard
                     key={activity.id}
                     activity={activity}
@@ -143,7 +142,7 @@ export default function DayItinerary({
                   />
                 ))}
                 <button
-                  onClick={() => onAddActivity(day.dayNumber, 'evening')}
+                  onClick={() => onAddActivity(day.dayNumber ?? day.day, 'evening')}
                   className="w-full p-2 border border-dashed border-white/20 rounded-xl text-gray-400 hover:text-white hover:border-white/40 text-sm transition-all"
                 >
                   + Add evening activity
@@ -152,30 +151,30 @@ export default function DayItinerary({
             </div>
 
             {/* Restaurants */}
-            {day.restaurants.length > 0 && (
-              <div>
-                <h4 className="text-sm font-semibold text-emerald-400 mb-2">🍽️ Suggested Restaurants</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  {day.restaurants.map((restaurant) => (
-                    <div
-                      key={restaurant.id}
-                      className="bg-white/[0.04] rounded-lg p-3 border border-white/10"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium text-white">{restaurant.name}</span>
-                        <span className="text-yellow-400 text-sm">★ {restaurant.rating}</span>
-                      </div>
-                      <div className="text-sm text-gray-400 mt-1">
-                        {restaurant.cuisine} · {restaurant.location}
-                      </div>
-                      <Badge variant="default" size="sm">
-                        {restaurant.priceLevel}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            {(day.restaurants || []).length > 0 && (
+  <div>
+    <h4 className="text-sm font-semibold text-emerald-400 mb-2">🍽️ Suggested Restaurants</h4>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+      {(day.restaurants || []).map((restaurant) => (
+        <div
+          key={restaurant.id}
+          className="bg-white/[0.04] rounded-lg p-3 border border-white/10"
+        >
+          <div className="flex items-center justify-between">
+            <span className="font-medium text-white">{restaurant.name}</span>
+            <span className="text-yellow-400 text-sm">★ {restaurant.rating}</span>
+          </div>
+          <div className="text-sm text-gray-400 mt-1">
+            {restaurant.cuisine} · {restaurant.location}
+          </div>
+          <Badge variant="default" size="sm">
+            {restaurant.priceLevel}
+          </Badge>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
 
             {/* Transportation */}
             {day.transportation && (

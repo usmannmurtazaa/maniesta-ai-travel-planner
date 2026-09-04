@@ -32,11 +32,11 @@ export default function DestinationDiscovery({ destinationInfo }: DestinationDis
         )}
       </Card>
 
-      {destinationInfo.localTips.length > 0 && (
+      {(destinationInfo.localTips?.length ?? 0) > 0 && (
         <Card>
           <h3 className="font-semibold text-white mb-3">💡 Local Tips</h3>
           <ul className="space-y-2">
-            {destinationInfo.localTips.map((tip, index) => (
+            {(destinationInfo.localTips || []).map((tip, index) => (
               <motion.li
                 key={index}
                 initial={{ opacity: 0, x: -10 }}
@@ -52,11 +52,11 @@ export default function DestinationDiscovery({ destinationInfo }: DestinationDis
         </Card>
       )}
 
-      {destinationInfo.recommendedPlaces.length > 0 && (
+      {(destinationInfo.recommendedPlaces?.length ?? 0) > 0 && (
         <Card>
           <h3 className="font-semibold text-white mb-3">📍 Recommended Places</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {destinationInfo.recommendedPlaces.map((place, index) => (
+             {(destinationInfo.recommendedPlaces || []).map((place, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, scale: 0.95 }}
