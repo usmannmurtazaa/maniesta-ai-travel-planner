@@ -32,7 +32,7 @@ Plan your perfect trip in minutes with Gemini AI, interactive maps, weather fore
 | Language        | TypeScript                          |
 | Styling         | Tailwind CSS + custom glass styles  |
 | Animations      | Framer Motion                       |
-| AI              | Google Gemini (gemini-2.5-flash)    |
+| AI              | Google Gemini (gemini-3.6-flash)    |
 | Weather         | Open‑Meteo API (no key required)    |
 | Maps            | Leaflet + OpenStreetMap             |
 | Storage         | localStorage                        |
