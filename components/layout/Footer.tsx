@@ -2,8 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Plane, Github, Twitter, Linkedin, Facebook, Instagram, Send, Check } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { Plane } from 'lucide-react'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -15,7 +14,6 @@ export default function Footer() {
     if (email.trim()) {
       setSubscribed(true)
       setEmail('')
-      // Reset after a few seconds (just for demo)
       setTimeout(() => setSubscribed(false), 3000)
     }
   }
@@ -29,44 +27,18 @@ export default function Footer() {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
-        {/* Main footer content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-1">
             <div className="flex items-center gap-2 mb-4">
               <Plane className="h-8 w-8 text-brand-teal" />
               <span className="font-bold text-xl bg-gradient-to-r from-brand-teal to-brand-indigo bg-clip-text text-transparent">
                 Maniesta AI
               </span>
             </div>
-            <p className="text-white/60 text-sm leading-relaxed max-w-sm">
-              Create personalized AI‑powered travel plans and itineraries tailored to your interests, budget, and style — all in one place.
+            <p className="text-white/60 text-sm leading-relaxed">
+              Create personalized AI‑powered travel plans and itineraries tailored to your interests, budget, and style.
             </p>
-            {/* Newsletter */}
-            <div className="mt-6">
-              <p className="text-sm font-medium text-white/80 mb-2">Get travel inspiration & updates</p>
-              <form onSubmit={handleSubscribe} className="flex gap-2 max-w-sm">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Your email"
-                  className="input-field flex-1"
-                  aria-label="Email for travel updates"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="btn-primary flex items-center gap-1 px-4 py-2"
-                  aria-label="Subscribe"
-                >
-                  {subscribed ? <Check className="h-4 w-4" /> : <Send className="h-4 w-4" />}
-                </button>
-              </form>
-              {subscribed && (
-                <p className="text-xs text-brand-teal mt-2">Thanks for subscribing!</p>
-              )}
-            </div>
           </div>
 
           {/* Product */}
@@ -102,44 +74,6 @@ export default function Footer() {
               <li><span className="text-white/60 cursor-default">Feedback</span></li>
             </ul>
           </div>
-
-          {/* Social / Connect */}
-          <div>
-            <h4 className="text-white font-semibold mb-4">Connect</h4>
-            <div className="flex gap-3">
-              {/* Replace with actual URLs when available */}
-              <button
-                aria-label="Twitter"
-                className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-colors"
-              >
-                <Twitter className="h-5 w-5" />
-              </button>
-              <button
-                aria-label="Facebook"
-                className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-colors"
-              >
-                <Facebook className="h-5 w-5" />
-              </button>
-              <button
-                aria-label="Instagram"
-                className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-colors"
-              >
-                <Instagram className="h-5 w-5" />
-              </button>
-              <button
-                aria-label="LinkedIn"
-                className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-colors"
-              >
-                <Linkedin className="h-5 w-5" />
-              </button>
-              <button
-                aria-label="GitHub"
-                className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-colors"
-              >
-                <Github className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
         </div>
 
         {/* Legal links */}
@@ -154,8 +88,16 @@ export default function Footer() {
           <p className="text-white/40 text-xs">
             © {currentYear} Maniesta AI Travel Planner. All rights reserved.
           </p>
-          <p className="text-white/40 text-xs flex items-center gap-1">
-            Built with <span className="text-brand-teal">AI</span>
+          <p className="text-white/40 text-xs">
+            Built by{' '}
+            <a
+              href="https://usmanmurtaza.nelify.app" // ← Replace with your portfolio URL
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand-teal hover:text-white transition-colors"
+            >
+              Usman Murtaza
+            </a>
           </p>
         </div>
       </div>
