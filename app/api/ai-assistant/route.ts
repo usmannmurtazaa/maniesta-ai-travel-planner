@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     const genAI = new GoogleGenerativeAI(API_KEY);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-3.5-flash-lite' });
 
     // Build conversation history and system prompt with trip context
     const systemPrompt = `You are a helpful AI travel assistant. You have access to the user's current trip itinerary. Use this context to answer questions accurately and suggest modifications when asked. The itinerary is: ${JSON.stringify(itinerary, null, 2)}. Answer the user's questions concisely and helpfully. If the user asks to modify the itinerary, provide suggestions but do not actually change the stored itinerary (the user can edit manually).`;
