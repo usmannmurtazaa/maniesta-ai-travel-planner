@@ -24,20 +24,20 @@ export async function POST(request: NextRequest) {
 
     let prompt: string;
     if (targetDay === 'all') {
-      prompt = `Regenerate the entire itinerary for ${itinerary.destination} keeping the same overall preferences. Current itinerary: ${JSON.stringify(itinerary, null, 2)}. Return only raw JSON with same structure. Ensure to include coordinates for activities if possible. IMPORTANT: Return only valid JSON, no markdown, no extra text.`;
+      prompt = `Regenerate the entire itinerary for ${itinerary.destination} keeping the same overall preferences. Current itinerary: ${JSON.stringify(itinerary, null, 2)}. Return only raw JSON with same structure. Ensure to include coordinates for activities if possible. Keep activities to 2-3 per day and descriptions short. IMPORTANT: Return only valid JSON, no markdown, no extra text, no trailing commas.`;
     } else {
       const dayToRegenerate = itinerary.days.find(d => d.day === targetDay);
       if (!dayToRegenerate) {
         return NextResponse.json({ error: 'Day not found' }, { status: 404 });
       }
-      prompt = `Regenerate only day ${targetDay} of the itinerary for ${itinerary.destination}. Current day: ${JSON.stringify(dayToRegenerate, null, 2)}. Keep the day number and theme, but change activities. Return only the day object in JSON with same structure. Include coordinates for activities if possible. IMPORTANT: Return only valid JSON, no markdown, no extra text.`;
+      prompt = `Regenerate only day ${targetDay} of the itinerary for ${itinerary.destination}. Current day: ${JSON.stringify(dayToRegenerate, null, 2)}. Keep the day number and theme, but change activities. Return only the day object in JSON with same structure. Include coordinates for activities if possible. Keep 2-3 activities and short descriptions. IMPORTANT: Return only valid JSON, no markdown, no extra text, no trailing commas.`;
     }
 
     const result = await model.generateContent({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
       generationConfig: {
-        maxOutputTokens: 4000, // increase to avoid truncation
-        temperature: 0.7,
+        maxOutputTokens: 8000, // increased
+        temperature: 0.5,
       },
     });
 
@@ -66,17 +66,13 @@ function extractJSON(text: string): string {
   if (cleaned.endsWith('```')) cleaned = cleaned.slice(0, -3);
   cleaned = cleaned.trim();
 
-  // Find first '{' and last '}'
   const startIndex = cleaned.indexOf('{');
   const endIndex = cleaned.lastIndexOf('}');
   if (startIndex === -1 || endIndex === -1 || endIndex <= startIndex) {
     throw new Error('No JSON object found in response');
   }
   let jsonStr = cleaned.substring(startIndex, endIndex + 1);
-
-  // Remove trailing commas before } or ]
   jsonStr = jsonStr.replace(/,\s*}/g, '}');
   jsonStr = jsonStr.replace(/,\s*]/g, ']');
-
   return jsonStr;
 }

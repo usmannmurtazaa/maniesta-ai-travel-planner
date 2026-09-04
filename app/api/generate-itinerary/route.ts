@@ -30,8 +30,8 @@ export async function POST(request: NextRequest) {
     const result = await model.generateContent({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
       generationConfig: {
-        maxOutputTokens: 4000, // increased to avoid truncation
-        temperature: 0.7,
+        maxOutputTokens: 8000, // increased to avoid truncation
+        temperature: 0.5, // slightly lower for more predictable JSON
       },
     });
     const response = result.response;
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     } catch (parseError) {
       console.error('Error parsing Gemini response:', parseError);
       console.error('Raw response:', text);
-      return NextResponse.json({ error: 'Failed to parse AI response' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to parse AI response. Please try again.' }, { status: 500 });
     }
 
     itinerary.generatedAt = new Date().toISOString();
@@ -91,7 +91,7 @@ Transportation preference: ${transportation}
 Generate a complete itinerary in JSON format with the following structure:
 {
   "destination": "string",
-  "summary": "brief overall trip summary",
+  "summary": "brief overall trip summary (1-2 sentences)",
   "days": [
     {
       "day": 1,
@@ -100,8 +100,8 @@ Generate a complete itinerary in JSON format with the following structure:
         {
           "time": "9:00 AM",
           "title": "Activity name",
-          "description": "Short description",
-          "location": "Place or address (optional)",
+          "description": "Very short description (under 15 words)",
+          "location": "Place or address (optional, keep short)",
           "cost": estimated cost in ${currency} (number, optional),
           "coordinates": {"lat": number, "lon": number}
         }
@@ -112,10 +112,10 @@ Generate a complete itinerary in JSON format with the following structure:
 
 Requirements:
 - Include exactly the number of days from start to end date.
-- Distribute activities throughout each day (2-5 activities per day).
+- Include **2 to 3 activities per day** (not more).
+- Keep descriptions concise; do not write long paragraphs.
 - Consider travel type, interests, budget, and preferences.
-- Provide realistic times and locations.
-- For each activity, if the location is well-known, provide approximate coordinates (lat/lon) as numbers. If unknown, omit the coordinates field.
+- For each activity, if the location is well-known, provide approximate coordinates (lat/lon). If unknown, omit the coordinates field.
 - IMPORTANT: Return only a valid JSON object. No markdown, no extra text, no comments. Ensure all property names are quoted and no trailing commas.
 `;
 }
